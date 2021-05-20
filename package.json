@@ -1,0 +1,11 @@
+{
+  "name": "floema",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "",
+    "development": "",
+    "start": ""
+  },
+  "author": "Nathan Kawaller",
+  "license": "ISC"
+}
