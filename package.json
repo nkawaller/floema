@@ -2,10 +2,16 @@
   "name": "floema",
   "version": "1.0.0",
   "scripts": {
-    "build": "",
-    "development": "",
-    "start": ""
+    "build": "webpack -p --progress --config webpack.config.build.js",
+    "development": "webpack-dev-server --progress --config webpack.config.development.js",
+    "start": "npm run development"
   },
   "author": "Nathan Kawaller",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.7.3"
+  }
 }
