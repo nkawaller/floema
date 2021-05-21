@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "scripts": {
     "build": "webpack -p --progress --config webpack.config.build.js",
-    "development": "webpack-dev-server --progress --config webpack.config.development.js",
+    "development": "webpack serve --progress --config webpack.config.development.js",
     "start": "npm run development"
   },
   "author": "Nathan Kawaller",
   "license": "ISC",
   "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^8.1.1",
+    "mini-css-extract-plugin": "^1.6.0",
     "webpack": "^5.37.1",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2",
