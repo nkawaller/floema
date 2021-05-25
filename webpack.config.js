@@ -3,7 +3,7 @@ const webpack = require("webpack");
 
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === "dev";
 
@@ -40,22 +40,10 @@ module.exports = {
 
     new ImageMinimizerPlugin({
       minimizerOptions: {
-        // Lossless optimization with custom option
-        // Feel free to experiment with options for better result for you
         plugins: [
-          ['gifsicle', { interlaced: true }],
-          ['jpegtran', { progressive: true }],
-          ['optipng', { optimizationLevel: 5 }],
-          [
-            'svgo',
-            {
-              plugins: [
-                {
-                  removeViewBox: false,
-                },
-              ],
-            },
-          ],
+          ["gifsicle", { interlaced: true }],
+          ["jpegtran", { progressive: true }],
+          ["optipng", { optimizationLevel: 5 }],
         ],
       },
     }),
@@ -99,6 +87,21 @@ module.exports = {
             return "[hash].[ext]";
           },
         },
+      },
+
+      {
+        test: /\.(jpe?g|png|gif|svg|webp)$/i,
+        use: [
+          {
+            loader: ImageMinimizerPlugin.loader,
+            options: {
+              severityError: "warning", // Ignore errors on corrupted images
+              minimizerOptions: {
+                plugins: ["gifsicle"],
+              },
+            },
+          },
+        ],
       },
     ],
   },
