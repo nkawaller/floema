@@ -10,7 +10,5 @@ module.exports = merge(config, {
   output: {
     path: path.resolve(__dirname, "public"),
   },
-  plugins: [
-      new CleanWebpackPlugin()
-  ]
+  plugins: [new CleanWebpackPlugin()],
 });
