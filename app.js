@@ -11,6 +11,7 @@ const PrismicDOM = require('prismic-dom')
 // Initialize the prismic.io api
 const initApi = (req) => {
   return Prismic.getApi(process.env.PRISMIC_ENDPOINT, {
+    accessToken: process.env.PRISMIC_ACCESS_TOKEN,
     req
   })
 }
@@ -45,7 +46,15 @@ app.get('/', (req, res) => {
 })
 
 app.get('/about', (req, res) => {
-  res.render('pages/about')
+  initApi(req).then((api) => {
+    api
+      .query(Prismic.Predicates.at('document.type', 'homepage'))
+      .then((response) => {
+        res.render('pages/about', {
+          document: response.results[0]
+        })
+      })
+  })
 })
 
 app.get('/detail/:uid', (req, res) => {
