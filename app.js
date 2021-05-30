@@ -8,18 +8,34 @@ const port = 3000
 const Prismic = require('@prismicio/client')
 const PrismicDOM = require('prismic-dom')
 
-// // Link Resolver
-// const handlelinkResolver = doc => {
-//   // Define the url depending on the document type
-//   if (doc.type === 'page') {
-//     return '/page/' + doc.uid
-//   } else if (doc.type === 'blog_post') {
-//     return '/blog/' + doc.uid
-//   }
+// Initialize the prismic.io api
+const initApi = (req) => {
+  return Prismic.getApi(process.env.PRISMIC_ENDPOINT, {
+    req
+  })
+}
 
-//   // Default to homepage
-//   return '/'
-// }
+// Link Resolver
+const handleLinkResolver = (doc) => {
+  // Define the url depending on the document type
+  // if (doc.type === 'page') {
+  //   return '/page/' + doc.uid
+  // } else if (doc.type === 'blog_post') {
+  //   return '/blog/' + doc.uid
+  // }
+
+  // Default to homepage
+  return '/'
+}
+
+app.use((req, res, next) => {
+  res.locals.ctx = {
+    endpoint: process.env.PRISMIC_ENDPOINT,
+    linkResolver: handleLinkResolver
+  }
+  res.locals.PrismicDOM = PrismicDOM
+  next()
+})
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
