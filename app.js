@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const app = express()
 const path = require('path')
@@ -18,8 +20,8 @@ app.get('/detail/:uid', (req, res) => {
   res.render('pages/detail')
 })
 
-app.get('/collections', (req, res) => {
-  res.render('pages/collections')
+app.get('/collection', (req, res) => {
+  res.render('pages/collection')
 })
 
 app.listen(port, () => {
