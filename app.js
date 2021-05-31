@@ -41,11 +41,11 @@ app.use((req, res, next) => {
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   res.render('pages/home')
 })
 
-app.get('/about', (req, res) => {
+app.get('/about', async (req, res) => {
   initApi(req).then((api) => {
     api
       .query(Prismic.Predicates.any('document.type', ['about', 'meta']))
