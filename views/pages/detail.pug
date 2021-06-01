@@ -4,4 +4,7 @@ block variables
   - var template = 'detail'
 
 block content
-  h1.detail__title Detail
+  .detail
+    .detail__wrapper
+      figure.detail__media
+        img.detail__media__image(alt=product.data)
