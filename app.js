@@ -66,6 +66,9 @@ app.get('/detail/:uid', async (req, res) => {
     fetchLinks: 'collection.title'
   })
 
+  // View the product fields using this
+  // console.log(product)
+
   res.render('pages/detail', {
     meta,
     product
