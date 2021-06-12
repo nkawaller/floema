@@ -75,8 +75,19 @@ app.get('/detail/:uid', async (req, res) => {
   })
 })
 
-app.get('/collection', (req, res) => {
-  res.render('pages/collection')
+app.get('/collections', async (req, res) => {
+  const api = await initApi(req)
+  const meta = await api.getSingle('meta')
+  const { results: collections } = await api.query(Prismic.Predicates.at('document.type', 'collection'), {
+    fetchLinks: 'product.image'
+  })
+
+  console.log(collections)
+
+  res.render('pages/collections', {
+    meta,
+    collections
+  })
 })
 
 app.listen(port, () => {
