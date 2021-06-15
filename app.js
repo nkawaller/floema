@@ -33,15 +33,17 @@ const handleLinkResolver = (doc) => {
 app.use(errorHandler())
 
 app.use((req, res, next) => {
-  res.locals.ctx = {
-    endpoint: process.env.PRISMIC_ENDPOINT,
-    linkResolver: handleLinkResolver
-  }
-  res.locals.PrismicDOM = PrismicDOM
+  // res.locals.ctx = {
+  //   endpoint: process.env.PRISMIC_ENDPOINT,
+  //   linkResolver: handleLinkResolver
+  // }
+
+  res.locals.Links = handleLinkResolver
   res.locals.Numbers = index => {
     // eslint-disable-next-line eqeqeq
     return index == 0 ? 'One' : index == 1 ? 'Two' : index == 2 ? 'Three' : index == 3 ? 'Four' : ''
   }
+  res.locals.PrismicDOM = PrismicDOM
   next()
 })
 
@@ -56,16 +58,19 @@ app.get('/about', async (req, res) => {
   const api = await initApi(req)
   const meta = await api.getSingle('meta')
   const about = await api.getSingle('about')
+  const preloader = await api.getSingle('preloader')
 
   res.render('pages/about', {
     about,
-    meta
+    meta,
+    preloader
   })
 })
 
 app.get('/detail/:uid', async (req, res) => {
   const api = await initApi(req)
   const meta = await api.getSingle('meta')
+  const preloader = await api.getSingle('preloader')
   const product = await api.getByUID('product', req.params.uid, {
     fetchLinks: 'collection.title'
   })
@@ -75,6 +80,7 @@ app.get('/detail/:uid', async (req, res) => {
 
   res.render('pages/detail', {
     meta,
+    preloader,
     product
   })
 })
@@ -83,6 +89,7 @@ app.get('/collections', async (req, res) => {
   const api = await initApi(req)
   const meta = await api.getSingle('meta')
   const home = await api.getSingle('home')
+  const preloader = await api.getSingle('preloader')
   const { results: collections } = await api.query(Prismic.Predicates.at('document.type', 'collection'), {
     fetchLinks: 'product.image'
   })
@@ -90,7 +97,8 @@ app.get('/collections', async (req, res) => {
   res.render('pages/collections', {
     collections,
     home,
-    meta
+    meta,
+    preloader
   })
 })
 
