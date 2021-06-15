@@ -29,6 +29,15 @@ const initApi = (req) => {
 
 // Link Resolver
 const handleLinkResolver = (doc) => {
+  if (doc.type === 'product') {
+    return `/detail/${doc.slug}`
+  }
+
+  if (doc.type === 'about') {
+    return '/about'
+  }
+
+  console.log(doc)
   // Define the url depending on the document type
   // if (doc.type === 'page') {
   //   return '/page/' + doc.uid
@@ -46,7 +55,7 @@ app.use((req, res, next) => {
   //   linkResolver: handleLinkResolver
   // }
 
-  res.locals.Links = handleLinkResolver
+  res.locals.Link = handleLinkResolver
   res.locals.Numbers = index => {
     // eslint-disable-next-line eqeqeq
     return index == 0 ? 'One' : index == 1 ? 'Two' : index == 2 ? 'Three' : index == 3 ? 'Four' : ''
@@ -58,21 +67,31 @@ app.use((req, res, next) => {
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
+const handleRequest = async api => {
+  const meta = await api.getSingle('meta')
+  const navigation = await api.getSingle('navigation')
+  const preloader = await api.getSingle('preloader')
+
+  return {
+    meta,
+    navigation,
+    preloader
+  }
+}
+
 app.get('/', async (req, res) => {
   const api = await initApi(req)
   const home = await api.getSingle('home')
-  const meta = await api.getSingle('meta')
-  const preloader = await api.getSingle('preloader')
+  const defaults = handleRequest()
 
   const { results: collections } = await api.query(Prismic.Predicates.at('document.type', 'collection'), {
     fetchLinks: 'product.image'
   })
 
   res.render('pages/home', {
+    ...defaults,
     collections,
-    home,
-    meta,
-    preloader
+    home
   })
 })
 
