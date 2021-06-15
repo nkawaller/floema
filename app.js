@@ -38,6 +38,10 @@ app.use((req, res, next) => {
     linkResolver: handleLinkResolver
   }
   res.locals.PrismicDOM = PrismicDOM
+  res.locals.Numbers = index => {
+    // eslint-disable-next-line eqeqeq
+    return index == 0 ? 'One' : index == 1 ? 'Two' : index == 2 ? 'Three' : index == 3 ? 'Four' : ''
+  }
   next()
 })
 
